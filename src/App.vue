@@ -1,33 +1,28 @@
 <template>
-
-<div>
-  
-  <CardBack />
-</div>
-
-  
+  <div>
+    <CardFront customerName="felicia leire" />
+    <CardBack cvc="142" />
+  </div>
 </template>
 
 <script>
-
-import CardBack from './components/CardBack.vue'
+import CardFront from "./components/CardFront.vue";
+ import CardBack from "./components/CardBack.vue";
 
 export default {
   components: {
-   
-    CardBack
-  }
-
-}
+    CardFront,
+     CardBack
+  },
+};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 div {
   display: flex;
   justify-content: center;
   height: 100vh;
   align-items: center;
 }
-
-
 </style>
