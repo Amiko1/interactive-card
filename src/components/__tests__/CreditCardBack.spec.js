@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import CreditCardBack from '../CreditCardBack.vue'
 
 
-it("should show cvc when cvc props is declared correct", () => {
+it("should render cvc when cvc props is declared correct", () => {
     const CVC = "123";
 
     const wrapper = mount(CreditCardBack, {

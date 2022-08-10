@@ -110,5 +110,9 @@
    display: none;
  }
 
-
- $base-color: red
+@media (min-width: 1500px) {
+  html {
+    font-size: 130%;
+  }
+}
+ 

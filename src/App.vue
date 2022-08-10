@@ -1,50 +1,71 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <CreditCardFront :card="card.front" class="card__front" />
-      <CreditCardBack :cvc="card.back.cvc" class="card__back" />
+      <CreditCardFront
+        :card="{
+          name,
+          mm,
+          yy,
+          number,
+        }"
+        class="card__front"
+      />
+      <CreditCardBack :cvc="cvc" class="card__back" />
     </header>
     <main class="card__main">
-      <form class="card__form">
+      <ThankFullVue @continue-form="continueForm" v-if="isFormSubmited" />
+      <form v-else @submit="submit" class="card__form">
         <BaseInput
-          v-model="card.front.name"
+          :error="nameError"
+          v-model="name"
           label="Cardholder Name"
           class="card--input"
           placeholder="e.g. Jane Appleseed"
-          onkeydown="return /[A-Z]/i.test(event.key)"
+          onkeydown="return /^[a-zA-Z ]*$/i.test(event.key)"
         />
-       
-       
+
         <BaseInput
-          v-model="card.front.number"
+          v-model="number"
+         
+          :error="numberError"
           @keypress="onlyNumber"
           label="Card Number"
           class="card--input"
+          maxlength="16"
           placeholder="e.g. 1234 5678 9123 0000"
         />
         <p class="input-wrapper">
           <BaseInput
-            v-model="card.front.mm"
+            v-model="mm"
             @keypress="onlyNumber"
             label="MM"
             class="card--input card__mm"
             placeholder="MM"
+            maxlength="2"
           />
           <BaseInput
-            v-model="card.front.yy"
+            v-model="yy"
             label="YY"
             @keypress="onlyNumber"
             class="card--input card__yy"
             placeholder="YY"
+            maxlength="2"
           />
           <BaseInput
             @keypress="onlyNumber"
-            v-model="card.back.cvc"
+            v-model="cvc"
             label="CVC"
             class="card--input card__cvc"
             placeholder="e.g. 123"
+            maxlength="3"
           />
         </p>
+        <div class="errors">
+          <BaseError v-if="mmError"  :error="mmError"   />
+          <BaseError v-if="yyError"  :error="yyError" />
+          <BaseError v-if="cvcError"  :error="cvcError" />
+        </div>
+        <base-button class="card__button" type="submit">Confirm</base-button>
       </form>
     </main>
   </section>
@@ -53,8 +74,13 @@
 <script>
 import CreditCardFront from "./components/CreditCardFront.vue";
 import CreditCardBack from "./components/CreditCardBack.vue";
+import ThankFullVue from "./components/ThankFull.vue";
+import BaseButton from './components/BaseButton.vue'
 import BaseError from "./components/BaseError.vue";
 import BaseInput from "./components/BaseInput.vue";
+import { useField, useForm } from "vee-validate";
+import { ref } from "vue";
+import * as yup from "yup";
 
 export default {
   components: {
@@ -62,28 +88,61 @@ export default {
     CreditCardBack,
     BaseInput,
     BaseError,
+    CreditCardFront,
+    BaseButton,
+    ThankFullVue
   },
-  
-  data() {
+
+  setup() {
+    
+    const isFormSubmited = ref(false)
+
+    const validationSchema = yup.object({
+      number: yup.string().required("This field is required").min(16),
+      name: yup.string().required("this field is required").min(4),
+      yy: yup.string().required("this ffield is required").min(2),
+      mm: yup.string().required("this field is requried").min(2),
+      cvc: yup.string().required("this field is required").min(3),
+    });
+
+    const { handleSubmit } = useForm({ validationSchema });
+
+    const { value: number, errorMessage: numberError } = useField("number");
+
+    const { value: name, errorMessage: nameError } = useField("name");
+
+    const { value: yy, errorMessage: yyError } = useField("yy");
+
+    const { value: mm, errorMessage: mmError } = useField("mm");
+
+    const { value: cvc, errorMessage: cvcError } = useField("cvc");
+
+    const submit = handleSubmit(values => {
+      isFormSubmited.value = true;
+    })
+
+    const continueForm = () => {
+       isFormSubmited.value = false;
+    }
+
     return {
-      card: {
-        front: {
-          number: "",
-          name: "",
-          mm: "",
-          yy: "",
-        },
-        back: {
-          cvc: "",
-        },
-      },
+      number,
+      numberError,
+      name,
+      nameError,
+      yy,
+      yyError,
+      mm,
+      mmError,
+      cvc,
+      cvcError,
+      submit,
+      isFormSubmited,
+      continueForm
     };
   },
 
- 
   methods: {
-   
-   
     onlyNumber($event) {
       //console.log($event.keyCode); //keyCodes value
       let keyCode = $event.keyCode ? $event.keyCode : $event.which;
@@ -93,7 +152,6 @@ export default {
       }
     },
   },
- 
 };
 </script>
 
@@ -111,6 +169,12 @@ export default {
     left: toRem(17);
     top: toRem(145);
     z-index: 10;
+    left: 50%;  
+    transform: translateX(-60%)
+  }
+
+  &__back {
+    margin: auto;
   }
 
   &__main {
@@ -136,6 +200,59 @@ export default {
   &__yy,
   &__mm {
     width: 22%;
+  }
+
+  .errors {
+    display: flex;
+    flex-direction: column;
+    gap: toRem(5)
+  }
+}
+
+@media (min-width: 1500px) {
+  .card {
+     display: flex;
+    &__header {
+      width: 33%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    &__main {
+      width: 77%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__front {
+      left: initial;  
+      transform: initial;
+      display: block;
+      left:initial;
+      right: -126px;
+      
+       position:relative;
+    }
+    &__back {
+      margin: initial;
+      position: relative;
+
+      top:toRem(170);
+      right: -226px;
+    }
+    &__form {
+      max-width: toRem(381);
+    }
+
+    &__button {
+      cursor: pointer;
+      transition: opacity 0.4s ease-in-out;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 }
 </style>

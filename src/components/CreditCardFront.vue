@@ -106,4 +106,11 @@ const cardName = computed(() => {
     justify-content: space-between;
   }
 }
+
+// @media (min-width: 700px) {
+//   .card {
+//     min-width: toRem(447);
+//     height: toRem(245);
+//   }
+// }
 </style>

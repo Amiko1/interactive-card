@@ -1,12 +1,12 @@
 <template>
-  <p class="error" v-if="error != ''">errr</p>
+  <p class="error" v-if="error != ''"> {{error && `* ${error}`}}</p>
 </template>
 
 <script setup>
 defineProps({
   error: {
     type: String,
-    default: "errr",
+    
   },
 });
 </script>

@@ -1,12 +1,13 @@
 <template>
   <div class="input-wrap">
-    <label v-if="label">{{ label }}</label>
+    <label   v-if="label">{{ label }}</label>
     <input
       type="text"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       v-bind="$attrs"
     />
+    <p class="error" v-if="error != ''">{{error && `* ${error}`}}</p>
   </div>
 </template>
 
@@ -20,7 +21,10 @@ defineProps({
     type: String,
     default: "",
   },
-  
+  error: {
+    type: String,
+    
+  },
 });
 </script>
 
@@ -50,7 +54,11 @@ defineProps({
       letter-spacing: 0.2px;
     }
   }
-
-  
+  .error {
+    @include bodyS;
+    color: $red;
+    
+    
+  }
 }
 </style>
