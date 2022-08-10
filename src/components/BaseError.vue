@@ -1,5 +1,5 @@
 <template>
-  <p class="error" v-if="error != ''"> {{error && `* ${error}`}}</p>
+  <p tabindex="0" class="error" v-if="error != ''" v-html="error && `<span aria-hidden='true'>* </span> ${error}`"></p>
 </template>
 
 <script setup>

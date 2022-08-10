@@ -1,13 +1,20 @@
 <template>
   <div class="input-wrap">
-    <label   v-if="label">{{ label }}</label>
-    <input
-      type="text"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      v-bind="$attrs"
-    />
-    <p class="error" v-if="error != ''">{{error && `* ${error}`}}</p>
+    <label v-if="label"
+      >{{ label }}
+      <input
+        type="text"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+        v-bind="$attrs"
+      />
+    </label>
+    <p
+      tabindex="0"
+      class="error"
+      v-if="error"
+      v-html="error && `<span aria-hidden='true'>* </span> ${error}`"
+    ></p>
   </div>
 </template>
 
@@ -23,7 +30,6 @@ defineProps({
   },
   error: {
     type: String,
-    
   },
 });
 </script>
@@ -35,6 +41,7 @@ defineProps({
   gap: toRem(9);
   align-items: start;
   label {
+    width: 100%;
     @include bodyS;
     font-weight: 600;
   }
@@ -57,8 +64,6 @@ defineProps({
   .error {
     @include bodyS;
     color: $red;
-    
-    
   }
 }
 </style>

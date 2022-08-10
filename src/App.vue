@@ -1,6 +1,6 @@
 <template>
   <section class="card">
-    <header class="card__header">
+    <header aria-hidden="true" class="card__header">
       <CreditCardFront
         :card="{
           name,
@@ -20,19 +20,16 @@
           v-model="name"
           label="Cardholder Name"
           class="card--input"
-          placeholder="e.g. Jane Appleseed"
           onkeydown="return /^[a-zA-Z ]*$/i.test(event.key)"
         />
 
         <BaseInput
           v-model="number"
-         
           :error="numberError"
           @keypress="onlyNumber"
           label="Card Number"
           class="card--input"
           maxlength="16"
-          placeholder="e.g. 1234 5678 9123 0000"
         />
         <p class="input-wrapper">
           <BaseInput
@@ -40,7 +37,6 @@
             @keypress="onlyNumber"
             label="MM"
             class="card--input card__mm"
-            placeholder="MM"
             maxlength="2"
           />
           <BaseInput
@@ -48,7 +44,6 @@
             label="YY"
             @keypress="onlyNumber"
             class="card--input card__yy"
-            placeholder="YY"
             maxlength="2"
           />
           <BaseInput
@@ -56,102 +51,69 @@
             v-model="cvc"
             label="CVC"
             class="card--input card__cvc"
-            placeholder="e.g. 123"
             maxlength="3"
           />
         </p>
         <div class="errors">
-          <BaseError v-if="mmError"  :error="mmError"   />
-          <BaseError v-if="yyError"  :error="yyError" />
-          <BaseError v-if="cvcError"  :error="cvcError" />
+          <BaseError v-if="mmError" :error="mmError" />
+          <BaseError v-if="yyError" :error="yyError" />
+          <BaseError v-if="cvcError" :error="cvcError" />
         </div>
-        <base-button class="card__button" type="submit">Confirm</base-button>
+        <base-button  class="card__button" type="submit"
+          >Confirm
+          <span v-if="Object.keys(errors).length !== 0" class="sr-only"
+            >is not avaliable because of errors</span
+          >
+        </base-button>
       </form>
     </main>
   </section>
 </template>
 
-<script>
+<script setup>
 import CreditCardFront from "./components/CreditCardFront.vue";
 import CreditCardBack from "./components/CreditCardBack.vue";
 import ThankFullVue from "./components/ThankFull.vue";
-import BaseButton from './components/BaseButton.vue'
+import BaseButton from "./components/BaseButton.vue";
 import BaseError from "./components/BaseError.vue";
 import BaseInput from "./components/BaseInput.vue";
 import { useField, useForm } from "vee-validate";
-import { ref } from "vue";
+import { ref, onUpdated } from "vue";
 import * as yup from "yup";
 
-export default {
-  components: {
-    CreditCardFront,
-    CreditCardBack,
-    BaseInput,
-    BaseError,
-    CreditCardFront,
-    BaseButton,
-    ThankFullVue
-  },
+let isFormSubmited = ref(false);
 
-  setup() {
-    
-    const isFormSubmited = ref(false)
+const validationSchema = yup.object({
+  number: yup.string().required().min(16),
+  name: yup.string().required().min(4),
+  yy: yup.string().required().min(2),
+  mm: yup.string().required().min(2),
+  cvc: yup.string().required().min(3),
+});
 
-    const validationSchema = yup.object({
-      number: yup.string().required("This field is required").min(16),
-      name: yup.string().required("this field is required").min(4),
-      yy: yup.string().required("this ffield is required").min(2),
-      mm: yup.string().required("this field is requried").min(2),
-      cvc: yup.string().required("this field is required").min(3),
-    });
+const { errors, handleSubmit, resetForm } = useForm({ validationSchema });
 
-    const { handleSubmit } = useForm({ validationSchema });
+const { value: number, errorMessage: numberError } = useField("number");
+const { value: name, errorMessage: nameError } = useField("name");
+const { value: yy, errorMessage: yyError } = useField("yy");
+const { value: mm, errorMessage: mmError } = useField("mm");
+const { value: cvc, errorMessage: cvcError } = useField("cvc");
 
-    const { value: number, errorMessage: numberError } = useField("number");
+const submit = handleSubmit((values) => {
+  isFormSubmited.value = true;
+});
 
-    const { value: name, errorMessage: nameError } = useField("name");
+const continueForm = () => {
+  isFormSubmited.value = false;
+  resetForm();
+};
 
-    const { value: yy, errorMessage: yyError } = useField("yy");
-
-    const { value: mm, errorMessage: mmError } = useField("mm");
-
-    const { value: cvc, errorMessage: cvcError } = useField("cvc");
-
-    const submit = handleSubmit(values => {
-      isFormSubmited.value = true;
-    })
-
-    const continueForm = () => {
-       isFormSubmited.value = false;
-    }
-
-    return {
-      number,
-      numberError,
-      name,
-      nameError,
-      yy,
-      yyError,
-      mm,
-      mmError,
-      cvc,
-      cvcError,
-      submit,
-      isFormSubmited,
-      continueForm
-    };
-  },
-
-  methods: {
-    onlyNumber($event) {
-      //console.log($event.keyCode); //keyCodes value
-      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-        // 46 is dot
-        $event.preventDefault();
-      }
-    },
-  },
+const onlyNumber = ($event) => {
+  let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+  if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+    // 46 is dot
+    $event.preventDefault();
+  }
 };
 </script>
 
@@ -169,8 +131,8 @@ export default {
     left: toRem(17);
     top: toRem(145);
     z-index: 10;
-    left: 50%;  
-    transform: translateX(-60%)
+    left: 50%;
+    transform: translateX(-60%);
   }
 
   &__back {
@@ -190,7 +152,7 @@ export default {
 
   .input-wrapper {
     display: flex;
-    gap: toRem(11);
+    justify-content: space-between;
   }
 
   .card__cvc {
@@ -205,13 +167,13 @@ export default {
   .errors {
     display: flex;
     flex-direction: column;
-    gap: toRem(5)
+    gap: toRem(5);
   }
 }
 
 @media (min-width: 1500px) {
   .card {
-     display: flex;
+    display: flex;
     &__header {
       width: 33%;
       min-height: 100vh;
@@ -227,19 +189,19 @@ export default {
     }
 
     &__front {
-      left: initial;  
+      left: initial;
       transform: initial;
       display: block;
-      left:initial;
+      left: initial;
       right: -126px;
-      
-       position:relative;
+
+      position: relative;
     }
     &__back {
       margin: initial;
       position: relative;
 
-      top:toRem(170);
+      top: toRem(170);
       right: -226px;
     }
     &__form {

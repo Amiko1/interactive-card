@@ -46,16 +46,6 @@ const customerCvc = computed(() => {
   }
 }
 
-
-// @media (min-width: 700px) {
-//   .card {
-//     min-width: toRem(447);
-//     height: toRem(245);
-//     &__cvc {
-//       @include bodyM;
-//     }
-//   }
-// }
 </style>
 
 

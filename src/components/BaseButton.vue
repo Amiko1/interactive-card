@@ -14,5 +14,8 @@
         color:$white;
         border-radius: 8px;
         margin-bottom: 8px;
+        &:focus{
+          outline: 5px solid $blue;
+        }
     }
 </style>

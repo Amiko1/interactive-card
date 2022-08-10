@@ -5,7 +5,9 @@
       <FilledCircle />
       <StrokeCircle />
     </div>
-    <p data-test="number" class="card__number">{{ cardNumber }}</p>
+    <p data-test="number" class="card__number">
+      {{ cardNumber }}
+    </p>
     <div class="container">
       <p data-test="name" class="card__name">
         {{ cardName }}
@@ -20,6 +22,7 @@ import { toRefs, computed } from "@vue/reactivity";
 import { mergeTexts } from "../utils/helpers.js";
 import FilledCircle from "./icons/FilledCircle.vue";
 import StrokeCircle from "./icons/StrokeCircle.vue";
+
 
 const props = defineProps({
   card: {
@@ -44,17 +47,21 @@ let defaultYY = "00";
 let defaultName = "name";
 
 const cardNumber = computed(() => {
-  if (card.value.number?.length < 17)
+  const MAX_NUMBER_SIZE = defaultNumber.length;
+
+  if (card.value.number?.length <= MAX_NUMBER_SIZE)
     defaultNumber = mergeTexts(defaultNumber, card.value.number.trim());
 
   return defaultNumber.replace(/.{4}/g, "$& ");
 });
 
 const cardDate = computed(() => {
-  if (card.value.mm?.length < 3)
+  const MAX_DATE_SIZE = defaultMM.length;
+
+  if (card.value.mm?.length <= MAX_DATE_SIZE)
     defaultMM = mergeTexts(defaultMM, card.value.mm.trim());
 
-  if (card.value.yy?.length < 3)
+  if (card.value.yy?.length <= MAX_DATE_SIZE)
     defaultYY = mergeTexts(defaultYY, card.value.yy.trim());
 
   return `${defaultMM} / ${defaultYY}`;
@@ -106,11 +113,4 @@ const cardName = computed(() => {
     justify-content: space-between;
   }
 }
-
-// @media (min-width: 700px) {
-//   .card {
-//     min-width: toRem(447);
-//     height: toRem(245);
-//   }
-// }
 </style>
