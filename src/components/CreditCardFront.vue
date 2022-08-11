@@ -7,16 +7,24 @@ import { ref, onUpdated } from "vue";
 
 const props = defineProps({
   number: {
+    required: true,
     type: String,
+    default: "",
   },
   name: {
+    required: true,
     type: String,
+    default: "",
   },
   month: {
+   required: true,
     type: String,
+    default: "",
   },
   year: {
+    required: true,
     type: String,
+    default: "",
   },
 });
 
@@ -29,7 +37,7 @@ const target = {
   name: "name",
 };
 
-const mergedNumber = useMerge(target.number, number);
+const mergedNumber = useMerge(target.number , number);
 const mergedMonth = useMerge(target.month, month);
 const mergedYear = useMerge(target.year, year);
 

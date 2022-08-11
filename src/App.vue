@@ -179,7 +179,8 @@ const onlyNumber = ($event) => {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
+      justify-content: center;
     }
     &__main {
       width: 77%;
@@ -192,17 +193,15 @@ const onlyNumber = ($event) => {
       left: initial;
       transform: initial;
       display: block;
-      left: initial;
-      right: -126px;
-
+      left: 130px;
+      top: 0px;
       position: relative;
     }
     &__back {
       margin: initial;
       position: relative;
-
-      top: toRem(170);
-      right: -226px;
+      left: 200px;
+      top: 30px;
     }
     &__form {
       max-width: toRem(381);
