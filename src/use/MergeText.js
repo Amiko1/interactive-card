@@ -1,4 +1,4 @@
-import {  computed } from 'vue'
+import { computed } from 'vue'
 import { mergeTexts } from "../utils/helpers.js";
 
 export function useMerge(target, base) {
@@ -6,12 +6,13 @@ export function useMerge(target, base) {
     const result = computed(() => {
 
         const MAX_NUMBER_SIZE = target.length;
+        let mergedTxt = target
 
         if (base.value?.length <= MAX_NUMBER_SIZE) {
-            target = mergeTexts(target, base.value.trim());
+            mergedTxt = mergeTexts(mergedTxt, base.value.trim());
         }
 
-        return target;
+        return mergedTxt;
     })
 
     return result

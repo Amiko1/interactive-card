@@ -1,11 +1,12 @@
 
 export function mergeTexts(target, base) {
 
+    console.log(target, base)
     if (!target) return base
 
-    let arrayTarget = target.split("");
+    let targetLettersList = target.split("");
 
-    let result = mergeArrays(arrayTarget, base);
+    let result = mergeArrays(targetLettersList, base);
 
     return result.join("");
 }
