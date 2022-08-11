@@ -1,7 +1,6 @@
 
 export function mergeTexts(target, base) {
 
-    console.log(target, base)
     if (!target) return base
 
     let targetLettersList = target.split("");
@@ -10,7 +9,6 @@ export function mergeTexts(target, base) {
 
     return result.join("");
 }
-
 
 function mergeArrays(target, base) {
 
@@ -22,7 +20,7 @@ function mergeArrays(target, base) {
         return item
 
     })
-
+    
     return test
 }
 
