@@ -54,14 +54,14 @@ it('should render default Credit Card Number when number prop is not empty text 
 it('should render default  Credit date  when date props is not passed correctly', () => {
 
     const CARD_DATE = {
-        mm: "123",
-        yy: "13"
+        month: "123",
+        year: "13"
     }
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            mm: CARD_DATE.mm,
-            yy: CARD_DATE.yy
+            month: CARD_DATE.month,
+            year: CARD_DATE.year
         }
     })
 
@@ -74,15 +74,15 @@ it('should render default  Credit date  when date props is not passed correctly'
 it('should render default  Credit date  when date props is  empty text (string)', () => {
 
     const CARD_DATE = {
-        mm: "",
-        yy: ""
+        month: "",
+        year: ""
     }
 
     const wrapper = mount(CreditCardFront, {
         props: {
 
-            mm: CARD_DATE.mm,
-            yy: CARD_DATE.yy
+            month: CARD_DATE.month,
+            year: CARD_DATE.year
 
         }
     })
@@ -97,20 +97,20 @@ it('should render default  Credit date  when date props is  empty text (string)'
 it('should  render  Credit date  when date props is  passed correctly', () => {
 
     const CARD_DATE = {
-        mm: "12",
-        yy: "13"
+        month: "12",
+        year: "13"
     }
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            mm: CARD_DATE.mm,
-            yy: CARD_DATE.yy
+            month: CARD_DATE.month,
+            year: CARD_DATE.year
         }
     })
 
     const actual = wrapper.find('[data-test="date"]')
 
-    const EXPECTED_DATE = `${CARD_DATE.mm} / ${CARD_DATE.yy}`
+    const EXPECTED_DATE = `${CARD_DATE.month} / ${CARD_DATE.year}`
     expect(actual.text()).toBe(`${EXPECTED_DATE}`)
 })
 
