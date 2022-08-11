@@ -1,6 +1,6 @@
 
 export function mergeTexts(target, base) {
-    console.log(target,base)
+   
     if (!target) return base
 
     let targetLettersList = target.split("");
