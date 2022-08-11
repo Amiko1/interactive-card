@@ -2,16 +2,13 @@ import { it, expect, describe } from 'vitest'
 import { mount } from '@vue/test-utils'
 import CreditCardFront from '../CreditCardFront.vue'
 
-
 it('should render Correct Credit Card Number when number prop is passed correctly', () => {
 
     const CARD_NUMBER = '12344321';
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                number: CARD_NUMBER
-            }
+            number: CARD_NUMBER
         }
     })
 
@@ -19,7 +16,6 @@ it('should render Correct Credit Card Number when number prop is passed correctl
 
     const actual = wrapper.find('[data-test="number"]')
     expect(actual.text()).toBe(`${EXPECTED_NUMBER}`)
-
 })
 
 
@@ -29,9 +25,7 @@ it('should render default Credit Card Number when number prop is not passed corr
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                number: CARD_NUMBER
-            }
+            number: CARD_NUMBER
         }
     })
 
@@ -39,7 +33,6 @@ it('should render default Credit Card Number when number prop is not passed corr
 
     const actual = wrapper.find('[data-test="number"]')
     expect(actual.text()).toBe(`${EXPECTED_NUMBER}`)
-
 })
 
 it('should render default Credit Card Number when number prop is not empty text (string)', () => {
@@ -48,9 +41,7 @@ it('should render default Credit Card Number when number prop is not empty text 
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                number: CARD_NUMBER
-            }
+            number: CARD_NUMBER
         }
     })
 
@@ -58,9 +49,7 @@ it('should render default Credit Card Number when number prop is not empty text 
 
     const actual = wrapper.find('[data-test="number"]')
     expect(actual.text()).toBe(`${EXPECTED_NUMBER}`)
-
 })
-
 
 it('should render default  Credit date  when date props is not passed correctly', () => {
 
@@ -69,14 +58,10 @@ it('should render default  Credit date  when date props is not passed correctly'
         yy: "13"
     }
 
-    console.log(CARD_DATE)
-
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                mm: CARD_DATE.mm,
-                yy: CARD_DATE.yy
-            }
+            mm: CARD_DATE.mm,
+            yy: CARD_DATE.yy
         }
     })
 
@@ -84,9 +69,7 @@ it('should render default  Credit date  when date props is not passed correctly'
 
     const EXPECTED_DATE = `00 / 13`
     expect(actual.text()).toBe(`${EXPECTED_DATE}`)
-
 })
-
 
 it('should render default  Credit date  when date props is  empty text (string)', () => {
 
@@ -95,14 +78,12 @@ it('should render default  Credit date  when date props is  empty text (string)'
         yy: ""
     }
 
-    
-
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                mm: CARD_DATE.mm,
-                yy: CARD_DATE.yy
-            }
+
+            mm: CARD_DATE.mm,
+            yy: CARD_DATE.yy
+
         }
     })
 
@@ -110,10 +91,7 @@ it('should render default  Credit date  when date props is  empty text (string)'
 
     const EXPECTED_DATE = `00 / 00`
     expect(actual.text()).toBe(EXPECTED_DATE)
-
 })
-
-
 
 
 it('should  render  Credit date  when date props is  passed correctly', () => {
@@ -125,10 +103,8 @@ it('should  render  Credit date  when date props is  passed correctly', () => {
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                mm: CARD_DATE.mm,
-                yy: CARD_DATE.yy
-            }
+            mm: CARD_DATE.mm,
+            yy: CARD_DATE.yy
         }
     })
 
@@ -136,9 +112,7 @@ it('should  render  Credit date  when date props is  passed correctly', () => {
 
     const EXPECTED_DATE = `${CARD_DATE.mm} / ${CARD_DATE.yy}`
     expect(actual.text()).toBe(`${EXPECTED_DATE}`)
-
 })
-
 
 it('should  render  Credit name  when date props is passed correctly', () => {
 
@@ -146,9 +120,7 @@ it('should  render  Credit name  when date props is passed correctly', () => {
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                name: CARD_NAME
-            }
+            name: CARD_NAME
         }
     })
 
@@ -157,24 +129,20 @@ it('should  render  Credit name  when date props is passed correctly', () => {
 
 })
 
-
 it('should  render default Credit name  when date props is empty string', () => {
 
     const CARD_NAME = ""
 
     const wrapper = mount(CreditCardFront, {
         props: {
-            card: {
-                name: CARD_NAME
-            }
+            name: CARD_NAME
         }
     })
 
     const actual = wrapper.find('[data-test="name"]')
-    
+
     const EXPECTED_NAME = "name"
     expect(actual.text()).toBe(`${EXPECTED_NAME}`)
-
 })
 
 

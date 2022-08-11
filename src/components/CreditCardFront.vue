@@ -1,3 +1,42 @@
+<script setup>
+import { toRefs, computed } from "@vue/reactivity";
+import FilledCircle from "./icons/FilledCircle.vue";
+import StrokeCircle from "./icons/StrokeCircle.vue";
+import { useMerge } from "../use/MergeText";
+import { ref, onUpdated } from "vue";
+
+const props = defineProps({
+  number: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+  month: {
+    type: String,
+  },
+  year: {
+    type: String,
+  },
+});
+
+const { number, name, month, year } = toRefs(props);
+
+const target = {
+  number: "0000000000000000",
+  month: "00",
+  year: "00",
+  name: "name",
+};
+
+const mergedNumber = useMerge(target.number, number);
+const mergedMonth = useMerge(target.month, month);
+const mergedYear = useMerge(target.year, year);
+
+const mergedName = computed(() => {
+  return name.value ? name.value : target.name;
+});
+</script>
 
 <template>
   <article class="card">
@@ -6,71 +45,18 @@
       <StrokeCircle />
     </div>
     <p data-test="number" class="card__number">
-      {{ cardNumber }}
+      {{ mergedNumber.replace(/.{4}/g, "$& ") }}
     </p>
     <div class="container">
       <p data-test="name" class="card__name">
-        {{ cardName }}
+        {{ mergedName }}
       </p>
-      <p data-test="date" class="card__date">{{ cardDate }}</p>
+      <p data-test="date" class="card__date">
+        {{ `${mergedMonth} / ${mergedYear}` }}
+      </p>
     </div>
   </article>
 </template>
-
-<script setup>
-import { toRefs, computed } from "@vue/reactivity";
-import { mergeTexts } from "../utils/helpers.js";
-import FilledCircle from "./icons/FilledCircle.vue";
-import StrokeCircle from "./icons/StrokeCircle.vue";
-
-
-const props = defineProps({
-  card: {
-    required: true,
-    type: Object,
-    default(rawProps) {
-      return {
-        number: "",
-        name: "",
-        mm: "",
-        yy: "",
-      };
-    },
-  },
-});
-
-const { card } = toRefs(props);
-
-let defaultNumber = "0000000000000000";
-let defaultMM = "00";
-let defaultYY = "00";
-let defaultName = "name";
-
-const cardNumber = computed(() => {
-  const MAX_NUMBER_SIZE = defaultNumber.length;
-
-  if (card.value.number?.length <= MAX_NUMBER_SIZE)
-    defaultNumber = mergeTexts(defaultNumber, card.value.number.trim());
-
-  return defaultNumber.replace(/.{4}/g, "$& ");
-});
-
-const cardDate = computed(() => {
-  const MAX_DATE_SIZE = defaultMM.length;
-
-  if (card.value.mm?.length <= MAX_DATE_SIZE)
-    defaultMM = mergeTexts(defaultMM, card.value.mm.trim());
-
-  if (card.value.yy?.length <= MAX_DATE_SIZE)
-    defaultYY = mergeTexts(defaultYY, card.value.yy.trim());
-
-  return `${defaultMM} / ${defaultYY}`;
-});
-
-const cardName = computed(() => {
-  return card.value.name ? card.value.name : defaultName;
-});
-</script>
 
 <style scoped lang="scss">
 .card {

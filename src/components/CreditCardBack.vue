@@ -1,15 +1,7 @@
-<template>
-  <article class="card">
-    <img src="../assets/bg-card-back.png" alt="card-back" />
-    <p data-test="cvc" class="card__cvc">
-      {{ customerCvc }}
-    </p>
-  </article>
-</template>
 
 <script setup>
 import { computed, toRefs } from "vue";
-import { mergeTexts } from "../utils/helpers.js";
+import { useMerge } from "../use/MergeText";
 
 const props = defineProps({
   cvc: {
@@ -20,17 +12,22 @@ const props = defineProps({
 });
 
 const { cvc } = toRefs(props);
-let defaultCvcValue = "000";
 
-const customerCvc = computed(() => {
-  if (cvc.value.length < 4) {
-    defaultCvcValue = mergeTexts(defaultCvcValue, cvc.value);
-  }
+const TARGET_CVC = "000";
 
-  return defaultCvcValue;
-});
+const mergedCvc = useMerge(TARGET_CVC, cvc);
+
 </script>
  
+<template>
+  <article class="card">
+    <img src="../assets/bg-card-back.png" alt="card-back" />
+    <p data-test="cvc" class="card__cvc">
+      {{ mergedCvc }}
+    </p>
+  </article>
+</template>
+
 <style  scoped lang="scss">
 .card {
   width: toRem(286);
@@ -45,7 +42,6 @@ const customerCvc = computed(() => {
     right: 13%;
   }
 }
-
 </style>
 
 

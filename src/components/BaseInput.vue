@@ -1,3 +1,19 @@
+<script setup>
+defineProps({
+  label: {
+    type: [String, Boolean],
+    default: false,
+  },
+  modelValue: {
+    type: String,
+    default: "",
+  },
+  error: {
+    type: String,
+  },
+});
+</script>
+
 <template>
   <div class="input-wrap">
     <label v-if="label"
@@ -17,22 +33,6 @@
     ></p>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  label: {
-    type: [String, Boolean],
-    default: false,
-  },
-  modelValue: {
-    type: String,
-    default: "",
-  },
-  error: {
-    type: String,
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .input-wrap {

@@ -1,15 +1,3 @@
-<template>
-  <article  class="thankfull">
-    <h2 tabindex="0" ref="text" class="thankfull__title">
-      Thank You! <span class="sr-only">We'hve added your card details</span>
-    </h2>
-    <p class="thankfull__subtitle">We'hve added your card details</p>
-    <base-button @click="$emit('continueForm')" class="thankfull__button"
-      >Continue </base-button
-    >
-  </article>
-</template>
-
 <script>
 import BaseButton from "./BaseButton.vue";
 import { ref, onMounted } from "vue";
@@ -20,6 +8,7 @@ export default {
 
   setup() {
     const text = ref(null);
+
     onMounted(() => {
       text.value.focus();
     });
@@ -31,6 +20,18 @@ export default {
 };
 </script>
 
+<template>
+  <article class="thankfull">
+    <h2 tabindex="0" ref="text" class="thankfull__title">
+      Thank You! <span class="sr-only">We'hve added your card details</span>
+    </h2>
+    <p class="thankfull__subtitle">We'hve added your card details</p>
+    <base-button @click="$emit('continueForm')" class="thankfull__button"
+      >Continue
+    </base-button>
+  </article>
+</template>
+
 <style scoped lang="scss">
 .thankfull {
   text-align: center;
@@ -38,6 +39,9 @@ export default {
     @include headlineXL;
     color: $deep-violet;
     text-transform: uppercase;
+    &:focus {
+      outline: none;
+    }
   }
   &__subtitle {
     @include headlineL;

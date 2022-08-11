@@ -2,10 +2,10 @@
   <section class="card">
     <header aria-hidden="true" class="card__header">
       <CreditCardFront
-        :card="{
+        v-bind="{
           name,
-          mm,
-          yy,
+          month,
+          year,
           number,
         }"
         class="card__front"
@@ -33,17 +33,17 @@
         />
         <p class="input-wrapper">
           <BaseInput
-            v-model="mm"
+            v-model="month"
             @keypress="onlyNumber"
-            label="MM"
-            class="card--input card__mm"
+            label="month"
+            class="card--input card__month"
             maxlength="2"
           />
           <BaseInput
-            v-model="yy"
-            label="YY"
+            v-model="year"
+            label="year"
             @keypress="onlyNumber"
-            class="card--input card__yy"
+            class="card--input card__year"
             maxlength="2"
           />
           <BaseInput
@@ -55,11 +55,11 @@
           />
         </p>
         <div class="errors">
-          <BaseError v-if="mmError" :error="mmError" />
-          <BaseError v-if="yyError" :error="yyError" />
+          <BaseError v-if="monthError" :error="monthError" />
+          <BaseError v-if="yearError" :error="yearError" />
           <BaseError v-if="cvcError" :error="cvcError" />
         </div>
-        <base-button  class="card__button" type="submit"
+        <base-button class="card__button" type="submit"
           >Confirm
           <span v-if="Object.keys(errors).length !== 0" class="sr-only"
             >is not avaliable because of errors</span
@@ -86,8 +86,8 @@ let isFormSubmited = ref(false);
 const validationSchema = yup.object({
   number: yup.string().required().min(16),
   name: yup.string().required().min(4),
-  yy: yup.string().required().min(2),
-  mm: yup.string().required().min(2),
+  year: yup.string().required().min(2),
+  month: yup.string().required().min(2),
   cvc: yup.string().required().min(3),
 });
 
@@ -95,8 +95,8 @@ const { errors, handleSubmit, resetForm } = useForm({ validationSchema });
 
 const { value: number, errorMessage: numberError } = useField("number");
 const { value: name, errorMessage: nameError } = useField("name");
-const { value: yy, errorMessage: yyError } = useField("yy");
-const { value: mm, errorMessage: mmError } = useField("mm");
+const { value: year, errorMessage: yearError } = useField("year");
+const { value: month, errorMessage: monthError } = useField("month");
 const { value: cvc, errorMessage: cvcError } = useField("cvc");
 
 const submit = handleSubmit((values) => {
@@ -159,8 +159,8 @@ const onlyNumber = ($event) => {
     width: 50%;
   }
 
-  &__yy,
-  &__mm {
+  &__year,
+  &__month {
     width: 22%;
   }
 

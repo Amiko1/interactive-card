@@ -1,8 +1,6 @@
 import { it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-
 import CreditCardBack from '../CreditCardBack.vue'
-
 
 it("should render cvc when cvc props is declared correct", () => {
     const CVC = "123";
@@ -17,8 +15,6 @@ it("should render cvc when cvc props is declared correct", () => {
 
     expect(actual.text()).toBe(`${CVC}`)
 })
-
-
 
 it("should should not render default cvc when props is not declared correct", () => {
     const CVC = "1234";

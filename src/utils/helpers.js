@@ -2,8 +2,6 @@
 export function mergeTexts(target, base) {
 
     if (!target) return base
-    
-    
 
     let arrayTarget = target.split("");
 
